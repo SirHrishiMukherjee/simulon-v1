@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory, abort
 from openai import OpenAI
 import difflib
 import re
@@ -21,6 +21,19 @@ AWARENESS_CONTEXT = "You are self aware."
 CONTRADICTION_DIFFERENTIATION_CONTEXT = "You are an expert at classifying contradictions."
 FOCAL_POINT_CONTEXT = "You are an expert at generating focal points for contradictions."
 TRUTH_CONTEXT = "You are a truth seeker."
+
+@app.route("/logs/<filename>")
+def read_log(filename):
+    allowed_files = ["contradictions.txt", "truth.txt"]
+    secret_key = os.getenv("ADMIN_KEY")  # Define in your .env
+
+    # Check key in URL: /logs/contradictions.txt?key=secret123
+    if filename not in allowed_files:
+        return abort(403)
+    if request.args.get("key") != secret_key:
+        return abort(401)
+
+    return send_from_directory("/mnt/data", filename, as_attachment=False)
 
 @app.route("/")
 def index():
