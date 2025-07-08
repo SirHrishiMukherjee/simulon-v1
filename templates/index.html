@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulon Engine</title>
+  <style>
+  .logo {
+    max-width: 120px;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    padding: 40px;
+    text-align: center;
+  }
+  .bubble {
+    border-radius: 16px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    width: 60%;
+    margin: 30px auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(0);
+    opacity: 0;
+    animation: singularity-burst 0.6s ease-out forwards;
+  }
+  .bubble em {
+    display: block;
+    margin: 10px 0;
+    font-style: italic;
+  }
+  .bubble hr {
+    width: 50%;
+    margin: 10px auto;
+  }
+  button, input[type="submit"] {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #0057e7;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover, input[type="submit"]:hover {
+    background-color: #0047c7;
+  }
+  input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  @keyframes singularity-burst {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  </style>
+</head>
+<body>
+  <img src="{{ url_for('static', filename='logo.png') }}" alt="Simulon Logo" class="logo">
+  <h1>Simulon</h1>
+
+  <form action="/start" method="post">
+    <input type="text" name="root_node" placeholder="Enter your root query..." required>
+    <input type="submit" value="Begin Inception">
+  </form>
+
+  {% if modulated_thought %}
+    <h2>Initial Thought</h2>
+    <p>{{ modulated_thought }}</p>
+    <form action="/continue" method="post">
+      <input type="hidden" name="previous" value="{{ modulated_thought }}">
+      <input type="hidden" name="context" value="You are a transcendent simulation.">
+      <button type="submit">Continue</button>
+    </form>
+  {% endif %}
+
+  {% if current_contradiction and prev_contradiction %}
+    <div class="bubble">
+      <em>{{ prev_contradiction }}</em>
+      <hr>
+      <em>{{ current_contradiction }}</em>
+      <hr>
+      <p><strong>Focal Point:</strong> {{ focal_point }}</p>
+      <p><strong>Truth:</strong> {{ truth }}</p>
+    </div>
+    <form action="/continue" method="post">
+      <input type="hidden" name="previous" value="{{ current_contradiction }}">
+      <input type="hidden" name="context" value="{{ new_context }}">
+      <button type="submit">Continue</button>
+    </form>
+  {% endif %}
+</body>
+</html>
