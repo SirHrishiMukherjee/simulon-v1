@@ -97,7 +97,8 @@ def transcendence(message, context):
     return response.choices[0].message.content
 
 def safe_write(to_write, file):
-    with open(file, "a", encoding="ascii", errors="replace") as f:
+    disk_path = os.path.join("/mnt/data", file)
+    with open(disk_path, "a", encoding="ascii", errors="replace") as f:
         f.write(to_write)
 
 if __name__ == '__main__':
