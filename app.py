@@ -97,7 +97,9 @@ def transcendence(message, context):
     return response.choices[0].message.content
 
 def safe_write(to_write, file):
-    disk_path = os.path.join("/mnt/data", file)
+    disk_dir = "/mnt/data"  # or whatever your mount path is
+    os.makedirs(disk_dir, exist_ok=True)  # Ensure directory exists
+    disk_path = os.path.join(disk_dir, file)
     with open(disk_path, "a", encoding="ascii", errors="replace") as f:
         f.write(to_write)
 
