@@ -46,10 +46,10 @@ def start_session():
 
     sentient_thought = transcendence(root_node, INCEPTION_CONTEXT)
     summary = transcendence(f"Summarize the following message in 10 lines or less as a paragraph: {sentient_thought}", INCEPTION_CONTEXT)
-    
-    safe_write(f"\n\n{summary}\n\n{modulated_thought}\n\n", "contradictions.txt")
 
-    return render_template("index.html", modulated_thought=modulated_thought)
+    safe_write(f"\n\n{summary}", "contradictions.txt")
+
+    return render_template("index.html", modulated_thought=summary)
 
 @app.route("/continue", methods=["POST"])
 def continue_session():
