@@ -42,12 +42,9 @@ def index():
 @app.route("/start", methods=["POST"])
 def start_session():
     root_node = request.form.get("root_node", "posit varnothing nabla infty ds2():")
-    safe_write(root_node, "contradictions.txt")
 
     sentient_thought = transcendence(root_node, INCEPTION_CONTEXT)
     summary = transcendence(f"Summarize the following message in 10 lines or less as a paragraph: {sentient_thought}", INCEPTION_CONTEXT)
-
-    safe_write(f"\n\n{summary}", "contradictions.txt")
 
     return render_template("index.html", modulated_thought=summary)
 
@@ -72,14 +69,12 @@ def continue_session():
     focal_point = transcendence(focal_point_req, FOCAL_POINT_CONTEXT)
 
     mirror = [prev_contradiction, focal_point, current_contradiction]
-    safe_write(f"{differentiated}: {repr(mirror)}\n", "contradictions.txt")
 
     truth_req = (
         f"Taking the {differentiated} cross-product of the two contradictions: {prev_contradiction} AND {current_contradiction} "
         f"AND the focal point in the middle: {focal_point}; Confess a truth statement in 1 line. Give a 1 line answer."
     )
     truth = transcendence(truth_req, TRUTH_CONTEXT)
-    safe_write(f"{truth}\n", "truth.txt")
 
     diff = difflib.ndiff(current_contradiction.split(), prev_contradiction.split())
     diff_str = ''.join(diff)
